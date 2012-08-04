@@ -11,5 +11,9 @@ include ADB
 def process_mock
   process_mock = double('process_mock')
   process_mock.should_receive(:start)
+  process_mock.should_receive(:poll_for_exit)
+  process_mock.should_receive(:io).twice.and_return(process_mock)
+  process_mock.should_receive(:stdout=)
+  process_mock.should_receive(:stderr=)
   process_mock
 end
