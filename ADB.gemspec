@@ -15,6 +15,8 @@ Gem::Specification.new do |gem|
   gem.require_paths = ["lib"]
   gem.version       = ADB::VERSION
   
+  gem.add_dependency 'childprocess', '~> 0.3.4'
+  
   gem.add_development_dependency 'rspec', '>= 2.10.0'
 
 end
