@@ -1,5 +1,11 @@
 require "ADB/version"
+require 'childprocess'
 
 module ADB
-  # Your code goes here...
+
+  def devices
+    process = ChildProcess.build('adb', 'devices')
+    process.start
+  end
+  
 end
