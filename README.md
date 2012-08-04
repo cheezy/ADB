@@ -1,6 +1,6 @@
 # ADB
 
-TODO: Write a gem description
+A simple wrapper around the Android Debug Bridge
 
 ## Installation
 
