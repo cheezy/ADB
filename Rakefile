@@ -8,6 +8,13 @@ RSpec::Core::RakeTask.new(:spec) do |spec|
 end
 task :spec
 
+Cucumber::Rake::Task.new(:features, "Run all features") do |t|
+  t.profile = 'default'
+end
+
+desc 'Run all specs and features'
+task :test => ['spec', 'features']
+
 task :lib do
   $LOAD_PATH.unshift(File.expand_path("lib", File.dirname(__FILE__)))
 end
