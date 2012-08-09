@@ -5,15 +5,15 @@ require 'tempfile'
 module ADB
 
   def start_server(timeout=30)
-    execute_adb_with(timeout, ['start-server'])
+    execute_adb_with(timeout, 'start-server')
   end
 
   def stop_server(timeout=30)
-    execute_adb_with(timeout, ['kill-server'])
+    execute_adb_with(timeout, 'kill-server')
   end
 
   def devices(timeout=30)
-    execute_adb_with(timeout, ['devices'])
+    execute_adb_with(timeout, 'devices')
   end
 
   def last_stdout
@@ -26,15 +26,13 @@ module ADB
 
   private
 
-  def execute_adb_with(timeout, parameters)
-    out = ::Tempfile.new('adb-out')
-    err = ::Tempfile.new('adb-err')
-    process = ChildProcess.build('adb', parameters.join(','))
-    process.io.stdout = out
-    process.io.stderr = err
+  def execute_adb_with(timeout, arguments)
+    process = ChildProcess.build('adb', arguments)
+    process.io.stdout, process.io.stderr = std_out_err
     process.start
     kill_if_longer_than(process, timeout)
-    get_output(out, err)
+    @last_stdout = output(process.io.stdout)
+    @last_stderr = output(process.io.stderr)
   end
 
   def kill_if_longer_than(process, timeout)
@@ -45,15 +43,15 @@ module ADB
     end
   end
 
-  def get_output(out, err)
-    out.rewind
-    @last_stdout = out.read
-    out.close
-    out.unlink
+  def output(file)
+    file.rewind
+    out = file.read
+    file.close
+    file.unlink
+    out
+  end
 
-    err.rewind
-    @last_stderr = err.read
-    err.close
-    err.unlink
+  def std_out_err
+    return ::Tempfile.new("adb-out#{Time.now}"), ::Tempfile.new("adb-err#{Time.now}")
   end
 end

@@ -17,13 +17,11 @@ describe ADB do
   end
 
   it "should stop process if it takes too long" do
-    process = double('process_mock')
-    process.should_receive(:io).twice.and_return(process)
-    process.should_receive(:stdout=)
-    process.should_receive(:stderr=)
+    process = double('process')
     process.should_receive(:start)
     process.should_receive(:poll_for_exit).and_raise(ChildProcess::TimeoutError)
     process.should_receive(:stop)
+    mock_output_file(process)
     ChildProcess.should_receive(:build).with('adb', 'devices').and_return(process)
     ADB.devices
   end
