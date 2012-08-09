@@ -12,6 +12,14 @@ module ADB
     execute_adb_with(timeout, 'kill-server')
   end
 
+  def connect(hostname, timeout=30)
+    execute_adb_with(timeout, "connect #{hostname}")
+  end
+
+  def disconnect(hostname, timeout=30)
+    execute_adb_with(timeout, "disconnect #{hostname}")
+  end
+
   def devices(timeout=30)
     execute_adb_with(timeout, 'devices')
   end
@@ -27,7 +35,8 @@ module ADB
   private
 
   def execute_adb_with(timeout, arguments)
-    process = ChildProcess.build('adb', arguments)
+    args = arguments.split
+    process = ChildProcess.build('adb', *args)
     process.io.stdout, process.io.stderr = std_out_err
     process.start
     kill_if_longer_than(process, timeout)

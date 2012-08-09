@@ -25,4 +25,14 @@ describe ADB do
     ChildProcess.should_receive(:build).with('adb', 'devices').and_return(process)
     ADB.devices
   end
+
+  it "should know how to connect to a device" do
+    ChildProcess.should_receive(:build).with('adb', 'connect', 'localhost').and_return(process_mock)
+    ADB.connect('localhost')
+  end
+
+  it "should know how to disconnect from a device" do
+    ChildProcess.should_receive(:build).with('adb', 'disconnect', 'localhost').and_return(process_mock)
+    ADB.disconnect('localhost')
+  end
 end
