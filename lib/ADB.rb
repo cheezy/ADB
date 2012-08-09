@@ -12,12 +12,12 @@ module ADB
     execute_adb_with(timeout, 'kill-server')
   end
 
-  def connect(hostname, timeout=30)
-    execute_adb_with(timeout, "connect #{hostname}")
+  def connect(hostname='localhost', port='5555', timeout=30)
+    execute_adb_with(timeout, "connect #{hostname}:#{port}")
   end
 
-  def disconnect(hostname, timeout=30)
-    execute_adb_with(timeout, "disconnect #{hostname}")
+  def disconnect(hostname='localhost', port='5555', timeout=30)
+    execute_adb_with(timeout, "disconnect #{hostname}:#{port}")
   end
 
   def devices(timeout=30)
