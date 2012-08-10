@@ -23,7 +23,7 @@ def mock_output_file(output)
   output.should_receive(:stderr=)
   output.should_receive(:stderr).and_return(output)
   output.should_receive(:rewind).twice
-  output.should_receive(:read).twice
+  output.should_receive(:read).twice.and_return([])
   output.should_receive(:close).twice
   output.should_receive(:unlink).twice
 end

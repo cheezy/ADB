@@ -1,11 +1,15 @@
-require "ADB/version"
+require 'ADB/version'
+require 'ADB/errors'
 require 'childprocess'
 require 'tempfile'
 
 module ADB
 
+  attr_reader :last_stdout
+
   def start_server(timeout=30)
     execute_adb_with(timeout, 'start-server')
+    raise LaunchError, "Server didn't start" unless stdout_contains "daemon started successfully"
   end
 
   def stop_server(timeout=30)
@@ -14,6 +18,7 @@ module ADB
 
   def connect(hostname='localhost', port='5555', timeout=30)
     execute_adb_with(timeout, "connect #{hostname}:#{port}")
+    raise LaunchError, "Could not connect to device at #{hostname}:#{port}" unless stdout_contains "connected to #{hostname}"
   end
 
   def disconnect(hostname='localhost', port='5555', timeout=30)
@@ -62,5 +67,9 @@ module ADB
 
   def std_out_err
     return ::Tempfile.new("adb-out#{Time.now}"), ::Tempfile.new("adb-err#{Time.now}")
+  end
+
+  def stdout_contains(expected)
+    last_stdout.include? expected
   end
 end
