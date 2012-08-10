@@ -12,3 +12,13 @@ Feature: Using the ADB module
     Given the adb server is started
     And I am connected to the local device
     Then I should see the device "localhost:5555"
+
+  Scenario: Installing applications on the device
+    Given the adb server is started
+    And I am connected to the local device
+    Then I should be able to install the sample application
+
+  Scenario: Uninstalling the application
+    Given the adb server is started
+    And I am connected to the local device
+    Then I should be able to uninstall the sample application

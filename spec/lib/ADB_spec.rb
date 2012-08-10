@@ -66,6 +66,93 @@ describe ADB do
       ADB.disconnect
     end
   end
+
+  context "wating for a device to start" do
+    it "should wait for only device" do
+      should_call_adb_with('wait-for-device')
+      ADB.wait_for_device
+    end
+
+    it "should wait for the only connected device" do
+      should_call_adb_with('-d', 'wait-for-device')
+      ADB.wait_for_device :device => 'blah'
+    end
+
+    it "should wait for the only emulator" do
+      should_call_adb_with('-e', 'wait-for-device')
+      ADB.wait_for_device :emulator => 'blah'
+    end
+
+    it "should wait for a device when using serial number" do
+      should_call_adb_with('-s', 'sernum', 'wait-for-device')
+      ADB.wait_for_device :serial => 'sernum'
+    end
+  end
+
+  context "when installing an apk" do
+    it "should be able to install an application" do
+      ADB.should_receive(:last_stdout).and_return("Success")
+      should_call_adb_with('install', 'Test.apk')
+      ADB.install 'Test.apk'
+    end
+
+    it "should install to the only connected device" do
+      ADB.should_receive(:last_stdout).and_return("Success")
+      should_call_adb_with('-d', 'install', 'Test.apk')
+      ADB.install 'Test.apk', :device => 'blah'
+    end
+
+    it "should install to the only emulator" do
+      ADB.should_receive(:last_stdout).and_return("Success")
+      should_call_adb_with('-e', 'install', 'Test.apk')
+      ADB.install 'Test.apk', :emulator => 'blah'
+    end
+
+    it "should install to a target using serial number" do
+      ADB.should_receive(:last_stdout).and_return("Success")
+      should_call_adb_with('-s', 'sernum', 'install', 'Test.apk')
+      ADB.install 'Test.apk', :serial => 'sernum'
+    end
+
+    it "should raise an error when the install fails" do
+      ADB.should_receive(:last_stdout).and_return("some error")
+      should_call_adb_with('install', 'Test.apk')
+      expect { ADB.install('Test.apk') }.to raise_error(ADBError)
+    end
+  end
+
+  context "when uninstalling an apk" do
+    it "should be able to uninstall an application" do
+      ADB.should_receive(:last_stdout).and_return('Success')
+      should_call_adb_with('uninstall', 'com.example')
+      ADB.uninstall 'com.example'
+    end
+
+    it "should uninstall from the only connected device" do
+      ADB.should_receive(:last_stdout).and_return('Success')
+      should_call_adb_with('-d', 'uninstall', 'com.example')
+      ADB.uninstall 'com.example', :device => 'blah'
+    end
+
+    it "should uninstall from the only emulator" do
+      ADB.should_receive(:last_stdout).and_return('Success')
+      should_call_adb_with('-e', 'uninstall', 'com.example')
+      ADB.uninstall 'com.example', :emulator => 'blah'
+    end
+
+    it "should unistall from a device using the serial number" do
+      ADB.should_receive(:last_stdout).and_return('Success')
+      should_call_adb_with('-s', 'sernum', 'uninstall', 'com.example')
+      ADB.uninstall 'com.example', :serial => 'sernum'
+    end
+
+    it "should raise an error when the uninstall fails" do
+      ADB.should_receive(:last_stdout).and_return('some error')
+      should_call_adb_with('uninstall', 'com.example')
+      expect { ADB.uninstall('com.example') }.to raise_error(ADBError)
+    end
+  end
+  
   
   def should_call_adb_with(*args)
     ChildProcess.should_receive(:build).with('adb', *args).and_return(process_mock)    

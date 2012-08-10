@@ -5,7 +5,7 @@ require 'tempfile'
 
 module ADB
 
-  attr_reader :last_stdout, :last_stdout
+  attr_reader :last_stdout, :last_stderr
 
   def start_server(timeout=30)
     execute_adb_with(timeout, 'start-server')
@@ -32,6 +32,20 @@ module ADB
     device_list.collect { |device| device.split("\t").first }
   end
 
+  def wait_for_device(target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} wait-for-device")
+  end
+
+  def install(installable, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} install #{installable}")
+    raise ADBError, "Could not install #{installable}" unless stdout_contains "Success"
+  end
+
+  def uninstall(package, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} uninstall #{package}")
+    raise ADBError, "Could not uninstall #{package}" unless stdout_contains "Success"
+  end
+
   private
 
   def execute_adb_with(timeout, arguments)
@@ -42,6 +56,14 @@ module ADB
     kill_if_longer_than(process, timeout)
     @last_stdout = output(process.io.stdout)
     @last_stderr = output(process.io.stderr)
+  end
+
+  def which_one(target)
+    direct = ''
+    direct = '-d' if target[:device]
+    direct = '-e' if target[:emulator]
+    direct = "-s #{target[:serial]}" if target[:serial]
+    direct
   end
 
   def kill_if_longer_than(process, timeout)
