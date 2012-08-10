@@ -9,7 +9,7 @@ module ADB
 
   def start_server(timeout=30)
     execute_adb_with(timeout, 'start-server')
-    raise LaunchError, "Server didn't start" unless stdout_contains "daemon started successfully"
+    raise ADBError, "Server didn't start" unless stdout_contains "daemon started successfully"
   end
 
   def stop_server(timeout=30)
@@ -18,7 +18,7 @@ module ADB
 
   def connect(hostname='localhost', port='5555', timeout=30)
     execute_adb_with(timeout, "connect #{hostname}:#{port}")
-    raise LaunchError, "Could not connect to device at #{hostname}:#{port}" unless stdout_contains "connected to #{hostname}"
+    raise ADBError, "Could not connect to device at #{hostname}:#{port}" unless stdout_contains "connected to #{hostname}"
   end
 
   def disconnect(hostname='localhost', port='5555', timeout=30)

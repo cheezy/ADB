@@ -2,7 +2,7 @@ module ADB
   class Error < StandardError
   end
 
-  class LaunchError < Error
+  class ADBError < Error
   end
   
 end
