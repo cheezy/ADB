@@ -5,7 +5,7 @@ require 'tempfile'
 
 module ADB
 
-  attr_reader :last_stdout
+  attr_reader :last_stdout, :last_stdout
 
   def start_server(timeout=30)
     execute_adb_with(timeout, 'start-server')
@@ -30,14 +30,6 @@ module ADB
     device_list = last_stdout.split("\n")
     device_list.shift
     device_list.collect { |device| device.split("\t").first }
-  end
-
-  def last_stdout
-    @last_stdout
-  end
-
-  def last_stderr
-    @last_stderr
   end
 
   private

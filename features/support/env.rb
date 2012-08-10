@@ -16,5 +16,6 @@ end
 
 After do
   stop_server
+  sleep 1
 end
 
