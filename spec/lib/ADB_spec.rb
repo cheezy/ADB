@@ -13,6 +13,7 @@ describe ADB do
   end
   
   it "should stop process if it takes too long" do
+    ADB.should_receive(:last_stdout).and_return("device")
     process = double('process')
     process.should_receive(:start)
     process.should_receive(:poll_for_exit).and_raise(ChildProcess::TimeoutError)
@@ -23,6 +24,7 @@ describe ADB do
   end
 
   it "should know how to provide list of devices" do
+    ADB.should_receive(:last_stdout).and_return("device")
     should_call_adb_with('devices')
     ADB.devices
   end

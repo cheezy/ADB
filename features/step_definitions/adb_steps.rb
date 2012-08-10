@@ -11,3 +11,11 @@ Then /^I should be able to connect to a local device$/ do
   last_stdout.should include "connected to localhost"
   disconnect('localhost')
 end
+
+Given /^I am connected to the local device$/ do
+  connect
+end
+
+Then /^I should see the device "(.*?)"$/ do |device|
+  devices.should include device
+end

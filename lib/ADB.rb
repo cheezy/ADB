@@ -27,6 +27,9 @@ module ADB
 
   def devices(timeout=30)
     execute_adb_with(timeout, 'devices')
+    device_list = last_stdout.split("\n")
+    device_list.shift
+    device_list.collect { |device| device.split("\t").first }
   end
 
   def last_stdout

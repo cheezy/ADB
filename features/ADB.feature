@@ -7,3 +7,8 @@ Feature: Using the ADB module
   Scenario: Connecting to a device
     Given the adb server is started
     Then I should be able to connect to a local device
+
+  Scenario: Getting list of devices
+    Given the adb server is started
+    And I am connected to the local device
+    Then I should see the device "localhost:5555"
