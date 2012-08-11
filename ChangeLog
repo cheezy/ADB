@@ -1,0 +1,10 @@
+=== 0.1 / 2012-8-10
+Initial release of the gem.  It has support for the following commands
+* start-server => start_server
+* kill-server => stop_server
+* connect => connect
+* disconnect => disconnect
+* devices => devices
+* wait-for-device => wait_for_device
+* install => install
+* uninstall => uninstall
