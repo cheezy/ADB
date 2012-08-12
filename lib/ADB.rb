@@ -110,6 +110,26 @@ module ADB
     raise ADBError, "Could not uninstall #{package}" unless stdout_contains "Success"
   end
 
+  #
+  # execute shell command
+  #
+  # @param [varargs] arguments to be passed to the shell command
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def shell(timeout=30, *arguments)
+    execute_adb_with(timeout, "wait-for-device shell #{arguments.join}")
+  end
+
+  #
+  # format a date for adb shell date command
+  #
+  # @param date to format.  Defaults current date
+  #
+  def format_date_for_adb(date=Date.new) 
+    date.strftime("%C%y%m%d.%H%M00")
+  end
+
   private
 
   def execute_adb_with(timeout, arguments)

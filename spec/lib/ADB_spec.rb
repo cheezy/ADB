@@ -29,6 +29,16 @@ describe ADB do
     ADB.devices
   end
 
+  it "should be able to check the device date and time" do
+    should_call_adb_with('wait-for-device', 'shell', 'date')
+    ADB.shell(timeout=30, 'date')
+  end
+
+  it "should be able to build an date formatted for adb shell date command" do
+    date = DateTime.strptime('04/23/2012  13:24', '%m/%d/%C%y %H:%M')
+    ADB.format_date_for_adb(date).should eq "20120423.132400"
+  end
+
   context "when connecting to a device" do
     before(:each) do
       ADB.should_receive(:last_stdout).and_return("connected to localhost")
