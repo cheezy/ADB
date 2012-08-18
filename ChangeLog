@@ -1,5 +1,6 @@
-=== Release 0.2
+=== Release 0.2 / 2012-8-18
 * Enhancements
+  * Added forward method
   * Added shell method
   * Added helper method to format dates for Android
 

@@ -132,6 +132,20 @@ module ADB
     date.strftime("%C%y%m%d.%H%M00")
   end
 
+  #
+  # setup port forwarding
+  #
+  # @param the source protocol:port
+  # @param the destination protocol:port
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def forward(source, destination, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} forward #{source} #{destination}")
+  end
+
   private
 
   def execute_adb_with(timeout, arguments)

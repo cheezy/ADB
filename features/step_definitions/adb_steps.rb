@@ -43,3 +43,7 @@ Then /^the device time should be Aug (.*?)$/ do |date_str|
   last_stdout.should include date_str
 end
 
+Then /^I should be able to forward "(.*?)" to "(.*?)"$/ do |source, target|
+  sn = devices[0]
+  forward(source, target, {:serial => sn})
+end

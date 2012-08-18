@@ -41,6 +41,11 @@ describe ADB do
     ADB.format_date_for_adb(date).should eq "20120423.132400"
   end
 
+  it "should setup port forwarding" do
+    should_call_adb_with('forward', 'src', 'dest')
+    ADB.forward('src', 'dest')
+  end
+  
   context "when connecting to a device" do
     before(:each) do
       ADB.should_receive(:last_stdout).and_return("connected to localhost")
