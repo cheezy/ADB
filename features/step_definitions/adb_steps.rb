@@ -32,3 +32,13 @@ Then /^I should be able to uninstall the sample application$/ do
   uninstall 'com.example.android.apis', {:serial => sn}
   last_stdout.should include 'Success'
 end
+
+When /^I change the devices date and time to (.*?)$/ do |date_arg|
+  date = DateTime.strptime(date_arg, '%m/%d/%C%y %I:%M')
+  shell(timeout=60, "date -s #{format_date_for_adb(date)}")
+end
+
+Then /^the device time should be Aug (.*?)$/ do |date_str|
+  last_stdout.should include date_str
+end
+
