@@ -34,8 +34,9 @@ Then /^I should be able to uninstall the sample application$/ do
 end
 
 When /^I change the devices date and time to (.*?)$/ do |date_arg|
+  sn = devices[0]
   date = DateTime.strptime(date_arg, '%m/%d/%C%y %I:%M')
-  shell(timeout=60, "date -s #{format_date_for_adb(date)}")
+  shell("date -s #{format_date_for_adb(date)}", {:serial => sn}, 60)
 end
 
 Then /^the device time should be Aug (.*?)$/ do |date_str|

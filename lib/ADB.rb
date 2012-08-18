@@ -113,12 +113,14 @@ module ADB
   #
   # execute shell command
   #
-  # @param [varargs] arguments to be passed to the shell command
+  # @param [String] command to be passed to the shell command
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
   # @param timeout value for the command to complete.  Defaults to 30
   # seconds.
   #
-  def shell(timeout=30, *arguments)
-    execute_adb_with(timeout, "wait-for-device shell #{arguments.join}")
+  def shell(command, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} wait-for-device shell #{command}")
   end
 
   #

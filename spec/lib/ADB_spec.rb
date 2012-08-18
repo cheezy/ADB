@@ -29,9 +29,11 @@ describe ADB do
     ADB.devices
   end
 
-  it "should be able to check the device date and time" do
-    should_call_adb_with('wait-for-device', 'shell', 'date')
-    ADB.shell(timeout=30, 'date')
+  context "when executing a shell command" do
+    it "should be able to check the device date and time" do
+      should_call_adb_with('wait-for-device', 'shell', 'date')
+      ADB.shell('date')
+    end
   end
 
   it "should be able to build an date formatted for adb shell date command" do
