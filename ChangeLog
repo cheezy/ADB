@@ -1,9 +1,9 @@
-=== 0.2
+=== Release 0.2
 * Enhancements
   * Added shell method
   * Added helper method to format dates for Android
 
-=== 0.1 / 2012-8-10
+=== Release 0.1 / 2012-8-10
 Initial release of the gem.  It has support for the following commands
 * start-server => start_server
 * kill-server => stop_server
