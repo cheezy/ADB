@@ -2,8 +2,8 @@
 require File.expand_path('../lib/ADB/version', __FILE__)
 
 Gem::Specification.new do |gem|
-  gem.authors       = ["Jeffrey S. Morgan"]
-  gem.email         = ["jeff.morgan@leandog.com"]
+  gem.authors       = ["Jeffrey S. Morgan", "Joel Byler"]
+  gem.email         = ["jeff.morgan@leandog.com", "joelbyler@gmail.com"]
   gem.description   = %q{Simple wrapper over Android Debug Bridge command-line tool}
   gem.summary       = %q{Simple wrapper over Android Debug Bridge command-line tool}
   gem.homepage      = "http://github.com/cheezy/ADB"
