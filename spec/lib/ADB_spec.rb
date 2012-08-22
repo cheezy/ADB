@@ -61,6 +61,11 @@ describe ADB do
     ADB.remount
   end
 
+  it "should be able to provide root access" do
+    should_call_adb_with('root')
+    ADB.root
+  end
+
   context "when connecting to a device" do
     before(:each) do
       ADB.should_receive(:last_stdout).and_return("connected to localhost")

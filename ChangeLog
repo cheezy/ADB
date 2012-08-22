@@ -1,3 +1,10 @@
+=== Release 0.3
+* Enhancements
+  * Added remount method (mounts /system as root)
+  * Added push method to push files to a device
+  * Added pull method to pull files from a device
+  * Added root method
+
 === Release 0.2 / 2012-8-18
 * Enhancements
   * Added forward method

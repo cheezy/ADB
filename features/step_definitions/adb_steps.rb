@@ -57,6 +57,14 @@ Then /^I can remount the system partition$/ do
   last_stdout.should include 'remount succeeded'
 end
 
+Then /^I can attain root privileges$/ do
+  sn = devices[0]
+  wait_for_device({:serial => sn}, 60)
+  root({:serial => sn})
+  #TODO: how to assert?
+  #last_stdout.should include 'remount succeeded'
+end
+
 Then /^I should be able to push a file to the local device$/ do
   # confirm that the file doesn't already exist
   sn = devices[0]

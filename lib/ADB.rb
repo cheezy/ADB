@@ -186,6 +186,18 @@ module ADB
     execute_adb_with(timeout, "#{which_one(target)} remount")
   end
 
+  #
+  # restarts the adb daemon with root permissions
+  #
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def root(target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} root")
+  end
+
   private
 
   def execute_adb_with(timeout, arguments)

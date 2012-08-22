@@ -39,6 +39,11 @@ Feature: Using the ADB module
     And I am connected to the local device
     Then I can remount the system partition
 
+  Scenario: Restart adb in root mode
+    Given the adb server is started
+    And I am connected to the local device
+    Then I can attain root privileges
+
   Scenario: Push a file
     Given the adb server is started
     And I am connected to the local device
