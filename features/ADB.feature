@@ -33,3 +33,19 @@ Feature: Using the ADB module
     Given the adb server is started
     And I am connected to the local device
     Then I should be able to forward "tcp:7777" to "tcp:5555"
+
+  Scenario: Remount the system partition for read-write access
+    Given the adb server is started
+    And I am connected to the local device
+    Then I can remount the system partition
+
+  Scenario: Push a file
+    Given the adb server is started
+    And I am connected to the local device
+    Then I should be able to push a file to the local device
+
+  Scenario: Pull a file
+    Given the adb server is started
+    Then I should be able to pull a file from the local device
+
+

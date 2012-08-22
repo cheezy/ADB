@@ -146,6 +146,46 @@ module ADB
     execute_adb_with(timeout, "#{which_one(target)} forward #{source} #{destination}")
   end
 
+  #
+  # push a file
+  #
+  # @param the fully quanified source (local) file name
+  # @param the fully quanified destination (device) file name
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def push(source, destination, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} push #{source} #{destination}")
+  end
+
+  #
+  # push a file
+  #
+  # @param the fully quanified source (device) file name
+  # @param the fully quanified destination (local) file name
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def pull(source, destination, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} pull #{source} #{destination}")
+  end
+
+  #
+  # remount /system as read-write
+  #
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def remount(target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} remount")
+  end
+
   private
 
   def execute_adb_with(timeout, arguments)

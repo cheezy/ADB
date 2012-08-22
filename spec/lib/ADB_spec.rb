@@ -45,7 +45,22 @@ describe ADB do
     should_call_adb_with('forward', 'src', 'dest')
     ADB.forward('src', 'dest')
   end
+
+  it "should push a file" do
+    should_call_adb_with('push', '/usr/foo.txt', '/sdcard/bar.txt')
+    ADB.push('/usr/foo.txt', '/sdcard/bar.txt')
+  end
+
+  it "should pull a file" do
+    should_call_adb_with('pull', '/usr/foo.txt', '/sdcard/bar.txt')
+    ADB.pull('/usr/foo.txt', '/sdcard/bar.txt')
+  end
   
+  it "should be able to remount the /system drive" do
+    should_call_adb_with('remount')
+    ADB.remount
+  end
+
   context "when connecting to a device" do
     before(:each) do
       ADB.should_receive(:last_stdout).and_return("connected to localhost")
