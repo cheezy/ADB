@@ -129,31 +129,31 @@ describe ADB do
   context "when installing an apk" do
     it "should be able to install an application" do
       ADB.should_receive(:last_stdout).and_return("Success")
-      should_call_adb_with('install', 'Test.apk')
+      should_call_adb_with('wait-for-device', 'install', 'Test.apk')
       ADB.install 'Test.apk'
     end
 
     it "should install to the only connected device" do
       ADB.should_receive(:last_stdout).and_return("Success")
-      should_call_adb_with('-d', 'install', 'Test.apk')
+      should_call_adb_with('-d', 'wait-for-device', 'install', 'Test.apk')
       ADB.install 'Test.apk', :device => 'blah'
     end
 
     it "should install to the only emulator" do
       ADB.should_receive(:last_stdout).and_return("Success")
-      should_call_adb_with('-e', 'install', 'Test.apk')
+      should_call_adb_with('-e', 'wait-for-device', 'install', 'Test.apk')
       ADB.install 'Test.apk', :emulator => 'blah'
     end
 
     it "should install to a target using serial number" do
       ADB.should_receive(:last_stdout).and_return("Success")
-      should_call_adb_with('-s', 'sernum', 'install', 'Test.apk')
+      should_call_adb_with('-s', 'sernum', 'wait-for-device', 'install', 'Test.apk')
       ADB.install 'Test.apk', :serial => 'sernum'
     end
 
     it "should raise an error when the install fails" do
       ADB.should_receive(:last_stdout).and_return("some error")
-      should_call_adb_with('install', 'Test.apk')
+      should_call_adb_with('wait-for-device', 'install', 'Test.apk')
       expect { ADB.install('Test.apk') }.to raise_error(ADBError)
     end
   end

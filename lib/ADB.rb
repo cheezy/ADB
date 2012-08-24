@@ -2,7 +2,7 @@ require 'ADB/version'
 require 'ADB/errors'
 require 'childprocess'
 require 'tempfile'
-
+require 'date'
 #
 # Mixin that provides access to the commands of the adb executable
 # which is a part of the android toolset.
@@ -92,7 +92,7 @@ module ADB
   # seconds.
   #
   def install(installable, target={}, timeout=30)
-    execute_adb_with(timeout, "#{which_one(target)} install #{installable}")
+    execute_adb_with(timeout, "#{which_one(target)} wait-for-device install #{installable}")
     raise ADBError, "Could not install #{installable}" unless stdout_contains "Success"
   end
 

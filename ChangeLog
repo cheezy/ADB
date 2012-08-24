@@ -1,5 +1,12 @@
 === Release 0.3 / 2012-8-22
 * Enhancements
+
+* Bug Fixes
+  * DateTime adjustment bug on Linux
+  * Add wait-for-device for install on Linux
+
+=== Release 0.3 / 2012-8-22
+* Enhancements
   * Added remount method (mounts /system as root)
   * Added push method to push files to a device
   * Added pull method to pull files from a device
