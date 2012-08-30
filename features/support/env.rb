@@ -17,5 +17,7 @@ end
 After do
   stop_server
   sleep 1
+
+  File.delete ('cuke_test_file.txt') unless not File.exists?('cuke_test_file.txt')
 end
 
