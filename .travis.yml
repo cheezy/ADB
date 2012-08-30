@@ -17,3 +17,5 @@ before_install:
 language: ruby
 rvm:
   - 1.9.3
+
+before_install: exec rake test
