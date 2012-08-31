@@ -19,6 +19,7 @@ Given /^I am connected to the local device$/ do
 end
 
 Then /^I should see the device "(.*?)"$/ do |device|
+puts devices
   devices.should include device
 end
 
