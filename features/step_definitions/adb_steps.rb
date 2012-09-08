@@ -25,8 +25,14 @@ end
 Then /^I should be able to install the sample application$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
-  install 'features/support/ApiDemos.apk', {:serial => sn}, 60
+  install 'features/support/ApiDemos.apk', nil, {:serial => sn}, 60
   last_stdout.should include 'Success'
+end
+
+Then /^I should be able to install the sample application using the "(.*?)" option$/ do |option|
+  sn = devices[0]
+  wait_for_device({:serial => sn}, 60)
+  install 'features/support/ApiDemos.apk', option, {:serial => sn}, 60
 end
 
 Then /^I should be able to uninstall the sample application$/ do

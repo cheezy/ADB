@@ -136,25 +136,31 @@ describe ADB do
     it "should install to the only connected device" do
       ADB.should_receive(:last_stdout).and_return("Success")
       should_call_adb_with('-d', 'wait-for-device', 'install', 'Test.apk')
-      ADB.install 'Test.apk', :device => 'blah'
+      ADB.install 'Test.apk', nil, :device => 'blah'
     end
 
     it "should install to the only emulator" do
       ADB.should_receive(:last_stdout).and_return("Success")
       should_call_adb_with('-e', 'wait-for-device', 'install', 'Test.apk')
-      ADB.install 'Test.apk', :emulator => 'blah'
+      ADB.install 'Test.apk', nil, :emulator => 'blah'
     end
 
     it "should install to a target using serial number" do
       ADB.should_receive(:last_stdout).and_return("Success")
       should_call_adb_with('-s', 'sernum', 'wait-for-device', 'install', 'Test.apk')
-      ADB.install 'Test.apk', :serial => 'sernum'
+      ADB.install 'Test.apk', nil, :serial => 'sernum'
     end
 
     it "should raise an error when the install fails" do
       ADB.should_receive(:last_stdout).and_return("some error")
       should_call_adb_with('wait-for-device', 'install', 'Test.apk')
       expect { ADB.install('Test.apk') }.to raise_error(ADBError)
+    end
+
+    it "should accept an optional parameter" do
+      ADB.should_receive(:last_stdout).and_return("Success")
+      should_call_adb_with('-s', 'sernum', 'wait-for-device', 'install', '-r', 'Test.apk')
+      ADB.install 'Test.apk', '-r', :serial => 'sernum'
     end
   end
 

@@ -1,6 +1,8 @@
-=== Release 0.3 / 2012-8-22
+=== Release 0.4
 * Enhancements
+  * Added ability to pass options to the install command
 
+=== Release 0.3 / 2012-8-22
 * Bug Fixes
   * DateTime adjustment bug on Linux
   * Add wait-for-device for install on Linux

@@ -17,6 +17,12 @@ Feature: Using the ADB module
     Given the adb server is started
     And I am connected to the local device
     Then I should be able to install the sample application
+    
+@focus
+  Scenario: Providing command line options for installation
+    Given the adb server is started
+    And I am connected to the local device
+    Then I should be able to install the sample application using the "-r" option
 
   Scenario: Uninstalling the application
     Given the adb server is started

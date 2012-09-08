@@ -91,8 +91,8 @@ module ADB
   # @param timeout value for the command to complete.  Defaults to 30
   # seconds.
   #
-  def install(installable, target={}, timeout=30)
-    execute_adb_with(timeout, "#{which_one(target)} wait-for-device install #{installable}")
+  def install(installable, options=nil, target={}, timeout=30)
+    execute_adb_with(timeout, "#{which_one(target)} wait-for-device install #{options} #{installable}")
     raise ADBError, "Could not install #{installable}" unless stdout_contains "Success"
   end
 
