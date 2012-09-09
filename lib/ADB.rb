@@ -245,6 +245,6 @@ module ADB
   end
 
   def filename_for(prefix)
-    "#{prefix}-#{Time.now.gsub(' ', '_').gsub(':', '_')}"
+    "#{prefix}-#{Time.now.to_s.gsub(' ', '_').gsub(':', '_')}"
   end
 end
