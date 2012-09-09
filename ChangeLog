@@ -1,3 +1,7 @@
+=== Release 0.5.1
+* Bug Fixes
+  * Corrected filename for stdout and stderr so it will work properly on Windows
+
 === Release 0.5 / 2012-9-9
 * Enhancements
   * Added instrument method to send an instrumentation request
