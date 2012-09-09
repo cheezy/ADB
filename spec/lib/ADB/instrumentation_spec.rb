@@ -1,8 +1,7 @@
 require 'spec_helper'
-require 'ADB/instrumentation'
 
 class InstrumentingClass
-  include ADB::Instrumentation
+  include ADB
 end
 
 describe ADB::Instrumentation do

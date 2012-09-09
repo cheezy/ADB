@@ -1,3 +1,4 @@
+require 'ADB/instrumentation'
 require 'ADB/version'
 require 'ADB/errors'
 require 'childprocess'
@@ -8,6 +9,7 @@ require 'date'
 # which is a part of the android toolset.
 #
 module ADB
+  include ADB::Instrumentation
 
   attr_reader :last_stdout, :last_stderr
 
