@@ -19,6 +19,7 @@ module ADB
     #
     def instrument(runner, args = {})
       with(the(runner) << and_the(args))
+      raise ADBError, last_stderr unless last_stderr.empty?
     end
 
     private

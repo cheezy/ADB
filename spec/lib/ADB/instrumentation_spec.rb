@@ -9,6 +9,11 @@ describe ADB::Instrumentation do
   let(:runner) { 'com.example/com.example.TestRunner' }
   let(:base_args) { "am instrument -w #{runner}".split }
 
+  before(:each) do
+    instrumenter.stub(:shell)
+    instrumenter.stub(:last_stderr).and_return('')
+  end
+
   context "when instrumenting through ADB" do
     it "should be able to run all of the tests" do
       instrumenter.should_receive(:shell).with(*base_args)
@@ -23,6 +28,11 @@ describe ADB::Instrumentation do
     it "should be able to take extra arguments" do
       instrumenter.should_receive(:shell).with(*base_args.concat("-e any thing -e should be -e able to -e be passed".split))
       instrumenter.instrument(runner, :any => 'thing', :should => 'be', :able => 'to', :be => 'passed')
+    end
+
+    it "should raise an error if anything is in stderr" do
+      instrumenter.stub(:last_stderr).and_return('some problem')
+      lambda { instrumenter.instrument(runner) }.should raise_error(exception=ADBError, message="some problem")
     end
   end
 
