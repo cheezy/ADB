@@ -237,7 +237,7 @@ module ADB
   end
 
   def std_out_err
-    return ::Tempfile.new(filename_for('adb-out'), ::Tempfile.new(filename_for('adb-err'))
+    return ::Tempfile.new(filename_for('adb-out')), ::Tempfile.new(filename_for('adb-err'))
   end
 
   def stdout_contains(expected)
@@ -245,6 +245,6 @@ module ADB
   end
 
   def filename_for(prefix)
-    "#{prefix}-#{Time.now.to_s.gsub(' ', '_').gsub(':', '_')}"
+    "#{prefix}-#{Time.new.to_s.gsub(' ', '_').gsub(':', '_')}"
   end
 end
