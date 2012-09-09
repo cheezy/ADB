@@ -11,7 +11,7 @@ describe ADB::Instrumentation do
 
   before(:each) do
     instrumenter.stub(:shell)
-    instrumenter.stub(:last_stderr).and_return('')
+    instrumenter.stub(:last_stdout).and_return('')
   end
 
   context "when instrumenting through ADB" do
@@ -31,7 +31,7 @@ describe ADB::Instrumentation do
     end
 
     it "should raise an error if anything is in stderr" do
-      instrumenter.stub(:last_stderr).and_return('some problem')
+      instrumenter.stub(:last_stdout).and_return('some problem')
       lambda { instrumenter.instrument(runner) }.should raise_error(exception=ADBError, message="some problem")
     end
   end
