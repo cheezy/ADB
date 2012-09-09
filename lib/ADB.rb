@@ -237,10 +237,14 @@ module ADB
   end
 
   def std_out_err
-    return ::Tempfile.new("adb-out#{Time.now}"), ::Tempfile.new("adb-err#{Time.now}")
+    return ::Tempfile.new(filename_for('adb-out'), ::Tempfile.new(filename_for('adb-err'))
   end
 
   def stdout_contains(expected)
     last_stdout.include? expected
+  end
+
+  def filename_for(prefix)
+    "#{prefix}-#{Time.now.gsub(' ', '_').gsub(':', '_')}"
   end
 end
