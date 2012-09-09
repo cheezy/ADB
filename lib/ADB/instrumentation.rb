@@ -15,11 +15,11 @@ module ADB
       "-w #{runner} "
     end
 
-    def and_the(extras)
-      to_arg(extras).join
+    def and_the(args)
+      to_args(args).join
     end
 
-    def to_arg(args)
+    def to_args(args)
       args.map do |name, value|
         "-e #{name} #{value} "
       end
