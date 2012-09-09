@@ -20,6 +20,11 @@ describe ADB::Instrumentation do
       instrumenter.should_receive(:shell).with(*base_args.concat("-e class com.example.class".split))
       instrumenter.instrument(runner, :class => 'com.example.class')
     end
+
+    it "should be able to take extra arguments" do
+      instrumenter.should_receive(:shell).with(*base_args.concat("-e any thing -e should be -e able to -e be passed".split))
+      instrumenter.instrument(runner, :any => 'thing', :should => 'be', :able => 'to', :be => 'passed')
+    end
   end
 
 end

@@ -2,23 +2,27 @@ require 'ADB/errors'
 
 module ADB
   module Instrumentation
-    def instrument(info, extras = {})
-      runner(info)
-      the_class(extras)
-      instrument_with(@args)
+    def instrument(runner, args = {})
+      with(the(runner) << and_the(args))
     end
 
     private
-    def runner(info)
-      @args = "-w #{info}"
+    def with(args)
+      shell *"am instrument #{args.strip}".split
     end
 
-    def the_class(extras)
-      @args << " -e class #{extras[:class]}" if extras[:class]
+    def the(runner)
+      "-w #{runner} "
     end
 
-    def instrument_with(args)
-      shell *"am instrument #{args}".split
+    def and_the(extras)
+      to_arg(extras).join
+    end
+
+    def to_arg(args)
+      args.map do |name, value|
+        "-e #{name} #{value} "
+      end
     end
 
   end
