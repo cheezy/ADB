@@ -7,7 +7,7 @@ end
 describe ADB::Instrumentation do
   let(:instrumenter) { InstrumentingClass.new }
   let(:runner) { 'com.example/com.example.TestRunner' }
-  let(:base_args) { "am instrument -w #{runner}".split }
+  let(:base_args) { "am instrument -w #{runner}" }
 
   before(:each) do
     instrumenter.stub(:shell)
@@ -21,12 +21,12 @@ describe ADB::Instrumentation do
     end
 
     it "should be able to run tests in a single test class" do
-      instrumenter.should_receive(:shell).with(*base_args.concat("-e class com.example.class".split))
+      instrumenter.should_receive(:shell).with(*base_args.concat(" -e class com.example.class"))
       instrumenter.instrument(runner, :class => 'com.example.class')
     end
 
     it "should be able to take extra arguments" do
-      instrumenter.should_receive(:shell).with(*base_args.concat("-e any thing -e should be -e able to -e be passed".split))
+      instrumenter.should_receive(:shell).with(*base_args.concat(" -e any thing -e should be -e able to -e be passed"))
       instrumenter.instrument(runner, :any => 'thing', :should => 'be', :able => 'to', :be => 'passed')
     end
 
