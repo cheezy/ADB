@@ -18,7 +18,7 @@ module ADB
     # @param [Hash] collection of key/value pairs to be sent as arguments to the instrumentation runner
     #
     def instrument(runner, args = {})
-      with(the(runner) << and_the(args))
+      with(the(args) << using_the(runner))
       raise ADBError, last_stdout unless last_stdout.empty?
     end
 
@@ -27,11 +27,13 @@ module ADB
       shell *"am instrument #{args.strip}"
     end
 
-    def the(runner)
-      "-w #{runner} "
+    def using_the(runner)
+      runner.insert(0, "-w ") unless single_test?
+      runner
     end
 
-    def and_the(args)
+    def the(args)
+      @args = args
       to_args(args).join
     end
 
@@ -39,6 +41,10 @@ module ADB
       args.map do |name, value|
         "-e #{name} #{value} "
       end
+    end
+
+    def single_test?
+      @args.has_key? :class
     end
 
   end
