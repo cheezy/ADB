@@ -13,7 +13,7 @@ before_install:
   - android update sdk -u --filter platform-tools,android-15,extra-android-support  
   - android list target
   - echo no | android create avd -n Android_4.0.3 -t 1 --abi armeabi-v7a --force
-  - emulator -avd Android_4.0.3 -port 5554 &
+  - emulator -avd Android_4.0.3 -port 5554 -no-window -no-audio -no-boot-anim &
 
 language: ruby
 rvm:
