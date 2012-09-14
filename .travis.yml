@@ -13,7 +13,9 @@ before_install:
   - android list sdk --all
   #- android update sdk --filter 1,3,6,31,32,35 --no-ui --force
   #- android update sdk -u --filter platform,tool,extra,platform-tools,android-15,extra-android-support  
-  - android update sdk -u -f --filter android-13 
+  #- android update sdk -u -f --filter android-13 
+  - android update sdk -u -f --filter android-15
+  - android list sdk --all
   - android list target
   - echo no | android create avd -n Android_4.0.3 -t 1 --force
   - emulator -avd Android_4.0.3 -port 5554 -no-window -no-audio -no-boot-anim &
