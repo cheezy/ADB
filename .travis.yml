@@ -5,6 +5,7 @@ before_install:
   - tar -zxf android-sdk_r18-linux.tgz
   - wget http://dl.google.com/android/repository/sysimg_armv7a-15_r02.zip
   - mkdir ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
+  - mkdir ~/builds/joelbyler/ADB/android-sdk-linux/system-images
   - unzip sysimg_armv7a-15_r02.zip -d ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
   # setup your ANDROID_HOME and PATH environment variables
   # use ~/builds/[Github username]/[project]/android-sdk-linux
