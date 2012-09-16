@@ -25,11 +25,11 @@ before_install:
   - echo no | android create avd -n Android_4.0.3 -t 1 --force
   - echo "hw.ramSize=2048" >> ~/.android/avd/Android_4.0.3.i
   - emulator -avd Android_4.0.3 -port 5554 -no-window -no-audio -no-boot-anim &
-  - adb wait-for-device
+  #- adb wait-for-device
 
 language: ruby
 rvm:
   - 1.9.3
 
-#after_script:
-#  - bundle exec rake test
+after_script:
+  - bundle exec rake test
