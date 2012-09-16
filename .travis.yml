@@ -23,7 +23,6 @@ before_install:
   
   # Create an emulator for testing against
   - echo no | android create avd -n Android_4.0.3 -t 1 --force
-  - echo "hw.ramSize=2048" >> ~/builds/joelbyler/.android/avd/Android_4.0.3.ini
   - echo "hw.ramSize=2048" >> ~/.android/avd/Android_4.0.3.i
   - emulator -avd Android_4.0.3 -port 5554 -no-window -no-audio -no-boot-anim &
   - adb wait-for-device
