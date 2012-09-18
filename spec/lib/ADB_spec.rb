@@ -46,24 +46,37 @@ describe ADB do
     ADB.forward('src', 'dest')
   end
 
-  it "should push a file" do
-    should_call_adb_with('push', '/usr/foo.txt', '/sdcard/bar.txt')
-    ADB.push('/usr/foo.txt', '/sdcard/bar.txt')
-  end
+  context "when transferring files" do
 
-  it "should pull a file" do
-    should_call_adb_with('pull', '/usr/foo.txt', '/sdcard/bar.txt')
-    ADB.pull('/usr/foo.txt', '/sdcard/bar.txt')
-  end
+    it "should be able to push a file" do
+      should_call_adb_with(' push', '/usr/foo.txt', '/sdcard/bar.txt')
+      ADB.push('/usr/foo.txt', '/sdcard/bar.txt')
+    end
+
+    it "should be able to push a file with spaces in the name" do
+      should_call_adb_with(' push', '/usr/local file with spaces.txt', '/sdcard/remote file with spaces.txt')
+      ADB.push('/usr/local file with spaces.txt', '/sdcard/remote file with spaces.txt')
+    end
+
+    it "should be able to pull a file" do
+      should_call_adb_with(' pull', '/usr/foo.txt', '/sdcard/bar.txt')
+      ADB.pull('/usr/foo.txt', '/sdcard/bar.txt')
+    end
+
+    it "should be able to pull a file with spaces in the name" do
+      should_call_adb_with(' pull', '/usr/local file with spaces.txt', '/sdcard/remote file with spaces.txt')
+      ADB.pull('/usr/local file with spaces.txt', '/sdcard/remote file with spaces.txt')
+    end
   
-  it "should be able to remount the /system drive" do
-    should_call_adb_with('remount')
-    ADB.remount
-  end
+    it "should be able to remount the /system drive" do
+      should_call_adb_with('remount')
+      ADB.remount
+    end
 
-  it "should be able to provide root access" do
-    should_call_adb_with('root')
-    ADB.root
+    it "should be able to provide root access" do
+      should_call_adb_with('root')
+      ADB.root
+    end
   end
 
   context "when connecting to a device" do

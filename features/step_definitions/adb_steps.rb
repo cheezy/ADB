@@ -72,10 +72,11 @@ Then /^I can attain root privileges$/ do
 end
 
 Then /^I should be able to push a file to the local device$/ do
-  # confirm that the file doesn't already exist
+  # be sure that the file doesn't already exist
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
+  shell('rm /system/cuke_test_file.txt', {:serial => sn})
   shell('ls /system/cuke_test_file.txt', {:serial => sn})
   last_stdout.should include 'No such file or directory'
 
