@@ -94,7 +94,7 @@ module ADB
   # seconds.
   #
   def install(installable, options=nil, target={}, timeout=30)
-    execute_adb_with(timeout, "#{which_one(target)} wait-for-device install #{options} #{installable}")
+    execute_adb_with_exactly(timeout, *"#{which_one(target)} wait-for-device install #{options}".split, installable)
     raise ADBError, "Could not install #{installable}" unless stdout_contains "Success"
   end
 
@@ -204,7 +204,11 @@ module ADB
 
   def execute_adb_with(timeout, arguments)
     args = arguments.split
-    process = ChildProcess.build('adb', *args)
+    execute_adb_with_exactly timeout, *args
+  end
+
+  def execute_adb_with_exactly(timeout, *arguments)
+    process = ChildProcess.build('adb', *arguments)
     process.io.stdout, process.io.stderr = std_out_err
     process.start
     kill_if_longer_than(process, timeout)

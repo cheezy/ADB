@@ -133,6 +133,12 @@ describe ADB do
       ADB.install 'Test.apk'
     end
 
+    it "should be able to install an application with spaces in the path" do
+      ADB.should_receive(:last_stdout).and_return("Success")
+      should_call_adb_with('wait-for-device', 'install', 'Test Path With Spaces.apk')
+      ADB.install 'Test Path With Spaces.apk'
+    end
+
     it "should install to the only connected device" do
       ADB.should_receive(:last_stdout).and_return("Success")
       should_call_adb_with('-d', 'wait-for-device', 'install', 'Test.apk')
