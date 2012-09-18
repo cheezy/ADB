@@ -163,7 +163,7 @@ module ADB
   end
 
   #
-  # push a file
+  # pull a file
   #
   # @param the fully quanified source (device) file name
   # @param the fully quanified destination (local) file name
