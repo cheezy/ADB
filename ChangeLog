@@ -1,5 +1,9 @@
-=== Release 0.5.1
-* Bug Fixes
+=== Release 0.5.2 / 2012-9-18
+* Fixes
+  * Corrected install when path has space
+
+=== Release 0.5.1 / 2012-9-11
+* Fixes
   * Corrected filename for stdout and stderr so it will work properly on Windows
 
 === Release 0.5 / 2012-9-9
@@ -11,7 +15,7 @@
   * Added ability to pass options to the install command
 
 === Release 0.3 / 2012-8-22
-* Bug Fixes
+* Fixes
   * DateTime adjustment bug on Linux
   * Add wait-for-device for install on Linux
 
