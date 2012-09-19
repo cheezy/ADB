@@ -159,7 +159,8 @@ module ADB
   # seconds.
   #
   def push(source, destination, target={}, timeout=30)
-    execute_adb_with_exactly(timeout, "#{which_one(target)} push".split, source, destination)
+    args = "#{which_one(target)} push".split
+    execute_adb_with_exactly(timeout, *args, source, destination)
   end
 
   #
@@ -173,7 +174,8 @@ module ADB
   # seconds.
   #
   def pull(source, destination, target={}, timeout=30)
-    execute_adb_with_exactly(timeout, "#{which_one(target)} pull".split, source, destination)
+    args = "#{which_one(target)} pull".split
+    execute_adb_with_exactly(timeout, *args, source, destination)
   end
 
   #

@@ -11,8 +11,8 @@ World(ADB)
 
 at_exit do
 #  emulator.stop
+  File.delete('cuke_test_file.txt') unless not File.exists?('cuke_test_file.txt')
 end
-
 
 After do
   stop_server
