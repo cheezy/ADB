@@ -1,3 +1,7 @@
+APK_FILE_NAME = 'features/support/ApiDemos.apk'
+TEMP_FILE_NAME = 'cuke_test_file.txt'
+TEMP_FILE_REMOTE_LOCATION = '/sdcard/'
+
 When /^the adb server is started$/ do
   start_server
 end
@@ -25,14 +29,14 @@ end
 Then /^I should be able to install the sample application$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
-  install 'features/support/ApiDemos.apk', nil, {:serial => sn}, 60
+  install APK_FILE_NAME, nil, {:serial => sn}, 60
   last_stdout.should include 'Success'
 end
 
 Then /^I should be able to install the sample application using the "(.*?)" option$/ do |option|
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
-  install 'features/support/ApiDemos.apk', option, {:serial => sn}, 60
+  install APK_FILE_NAME, option, {:serial => sn}, 60
 end
 
 Then /^I should be able to uninstall the sample application$/ do
@@ -76,15 +80,15 @@ Then /^I should be able to push a file to the local device$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
-  shell('rm /sdcard/cuke_test_file.txt', {:serial => sn})
-  shell('ls /sdcard/cuke_test_file.txt', {:serial => sn})
+  shell("rm #{TEMP_FILE_NAME}", {:serial => sn})
+  shell("ls #{TEMP_FILE_NAME}", {:serial => sn})
   last_stdout.should include 'No such file or directory'
 
   # create the temp file
-  File.open('cuke_test_file.txt', 'w'){ |f|  f.write('Temporary file for adb testing. If found, please delete.') }
+  File.open(TEMP_FILE_NAME, 'w'){ |f|  f.write('Temporary file for adb testing. If found, please delete.') }
 
   # push the file
-  push('cuke_test_file.txt', '/sdcard/cuke_test_file.txt', {:serial => sn})
+  push(TEMP_FILE_NAME, "#{TEMP_FILE_REMOTE_LOCATION}#{TEMP_FILE_NAME}", {:serial => sn})
   last_stderr.should_not include 'failed to copy'
 
 end
@@ -94,11 +98,11 @@ Then /^I should be able to pull a file from the local device$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
-  shell("touch /sdcard/cuke_test_file.txt", {:serial => sn})
+  shell("touch #{TEMP_FILE_REMOTE_LOCATION}#{TEMP_FILE_NAME}", {:serial => sn})
 
   # pull the file
-  pull('/sdcard/cuke_test_file.txt', 'cuke_test_file.txt', {:serial => sn})
+  pull "#{TEMP_FILE_REMOTE_LOCATION}#{TEMP_FILE_NAME}", #{TEMP_FILE_NAME}", {:serial => sn})
 
   # confirm that the file was created
-  File.exists?('cuke_test_file.txt').should == true
+  File.exists?(TEMP_FILE_NAME).should == true
 end
