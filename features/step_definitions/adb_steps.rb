@@ -76,15 +76,15 @@ Then /^I should be able to push a file to the local device$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
-  shell('rm /system/cuke_test_file.txt', {:serial => sn})
-  shell('ls /system/cuke_test_file.txt', {:serial => sn})
+  shell('rm /sdcard/cuke_test_file.txt', {:serial => sn})
+  shell('ls /sdcard/cuke_test_file.txt', {:serial => sn})
   last_stdout.should include 'No such file or directory'
 
   # create the temp file
   File.open('cuke_test_file.txt', 'w'){ |f|  f.write('Temporary file for adb testing. If found, please delete.') }
 
   # push the file
-  push('cuke_test_file.txt', '/system/cuke_test_file.txt', {:serial => sn})
+  push('cuke_test_file.txt', '/sdcard/cuke_test_file.txt', {:serial => sn})
   last_stderr.should_not include 'failed to copy'
 
 end
@@ -94,10 +94,10 @@ Then /^I should be able to pull a file from the local device$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
-  shell("touch /system/cuke_test_file.txt", {:serial => sn})
+  shell("touch /sdcard/cuke_test_file.txt", {:serial => sn})
 
   # pull the file
-  pull('/system/cuke_test_file.txt', 'cuke_test_file.txt', {:serial => sn})
+  pull('/sdcard/cuke_test_file.txt', 'cuke_test_file.txt', {:serial => sn})
 
   # confirm that the file was created
   File.exists?('cuke_test_file.txt').should == true
