@@ -21,7 +21,7 @@ module ADB
   #
   def start_server(timeout=30)
     execute_adb_with(timeout, 'start-server')
-    raise ADBError, "Server didn't start" unless stdout_contains "daemon started successfully"
+    raise ADBError, "Server didn't start#{stdout_stderr_message}" unless stdout_contains "daemon started successfully"
   end
 
   #
@@ -44,7 +44,7 @@ module ADB
   #
   def connect(hostname='localhost', port='5555', timeout=30)
     execute_adb_with(timeout, "connect #{hostname}:#{port}")
-    raise ADBError, "Could not connect to device at #{hostname}:#{port}" unless stdout_contains "connected to #{hostname}"
+    raise ADBError, "Could not connect to device at #{hostname}:#{port}#{stdout_stderr_message}" unless stdout_contains "connected to #{hostname}"
   end
 
   #
@@ -95,7 +95,7 @@ module ADB
   #
   def install(installable, options=nil, target={}, timeout=30)
     execute_adb_with_exactly(timeout, *"#{which_one(target)} wait-for-device install #{options}".split, installable)
-    raise ADBError, "Could not install #{installable}" unless stdout_contains "Success"
+    raise ADBError, "Could not install #{installable}#{stdout_stderr_message}" unless stdout_contains "Success"
   end
 
   #
@@ -109,7 +109,7 @@ module ADB
   #
   def uninstall(package, target={}, timeout=30)
     execute_adb_with(timeout, "#{which_one(target)} uninstall #{package}")
-    raise ADBError, "Could not uninstall #{package}" unless stdout_contains "Success"
+    raise ADBError, "Could not uninstall #{package}#{stdout_stderr_message}" unless stdout_contains "Success"
   end
 
   #
@@ -203,6 +203,19 @@ module ADB
   end
 
   private
+
+  def stdout_stderr_message
+    if not last_stdout.empty?
+      if not last_stderr.empty?
+        return " Cause: #{last_stdout}, and Error: #{last_stderr}"    
+      else
+        return " Cause: #{last_stdout}"
+      end
+    elsif not last_stderr.empty?
+        return " Error: #{last_stderr}"
+    end
+    ''
+  end
 
   def execute_adb_with(timeout, arguments)
     args = arguments.split

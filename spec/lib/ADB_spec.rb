@@ -209,10 +209,30 @@ describe ADB do
     end
 
     it "should raise an error when the uninstall fails" do
-      ADB.should_receive(:last_stdout).and_return('some error')
+      ADB.should_receive(:last_stdout).any_number_of_times.and_return('some error')
       should_call_adb_with('uninstall', 'com.example')
       expect { ADB.uninstall('com.example') }.to raise_error(ADBError)
     end
+
+    it "should raise an error when the uninstall fails" do
+      ADB.should_receive(:last_stdout).any_number_of_times.and_return('some stdout message')
+      should_call_adb_with('uninstall', 'com.example')
+      expect { ADB.uninstall('com.example') }.to raise_error(ADBError, "Could not uninstall com.example Cause: some stdout message")
+    end
+
+    it "should raise an error when the uninstall fails" do
+      ADB.should_receive(:last_stderr).any_number_of_times.and_return('some stderr message')
+      should_call_adb_with('uninstall', 'com.example')
+      expect { ADB.uninstall('com.example') }.to raise_error(ADBError, "Could not uninstall com.example Error: some stderr message")
+    end
+
+    it "should raise an error when the uninstall fails" do
+      ADB.should_receive(:last_stdout).any_number_of_times.and_return('some stdout message')
+      ADB.should_receive(:last_stderr).any_number_of_times.and_return('some stderr message')
+      should_call_adb_with('uninstall', 'com.example')
+      expect { ADB.uninstall('com.example') }.to raise_error(ADBError, "Could not uninstall com.example Cause: some stdout message, and Error: some stderr message")
+    end
+
   end
   
   
