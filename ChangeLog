@@ -1,3 +1,7 @@
+=== Release 0.5.5 / 2012-9-18
+* Enhancements
+  * Added last Stdout and Stderr to ADBError messages
+
 === Release 0.5.4 / 2012-9-19
 * Fixes
   * Corrected push, pull when multiple arguments used
