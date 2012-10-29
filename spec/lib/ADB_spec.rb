@@ -171,7 +171,7 @@ describe ADB do
     end
 
     it "should raise an error when the install fails" do
-      ADB.should_receive(:last_stdout).and_return("some error")
+      ADB.should_receive(:last_stdout).any_number_of_times.and_return("some error")
       should_call_adb_with('wait-for-device', 'install', 'Test.apk')
       expect { ADB.install('Test.apk') }.to raise_error(ADBError)
     end
