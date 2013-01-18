@@ -1,3 +1,4 @@
+require 'ADB/instrumentation'
 require 'ADB/version'
 require 'ADB/errors'
 require 'childprocess'
@@ -8,8 +9,9 @@ require 'date'
 # which is a part of the android toolset.
 #
 module ADB
+  include ADB::Instrumentation
 
-  attr_reader :last_stdout, :last_stderr
+  attr_reader :last_stdout, :last_stderr  
 
   #
   # start the server process
@@ -19,7 +21,7 @@ module ADB
   #
   def start_server(timeout=30)
     execute_adb_with(timeout, 'start-server')
-    raise ADBError, "Server didn't start" unless stdout_contains "daemon started successfully"
+    raise ADBError, "Server didn't start#{stdout_stderr_message}" unless stdout_contains "daemon started successfully"
   end
 
   #
@@ -42,7 +44,7 @@ module ADB
   #
   def connect(hostname='localhost', port='5555', timeout=30)
     execute_adb_with(timeout, "connect #{hostname}:#{port}")
-    raise ADBError, "Could not connect to device at #{hostname}:#{port}" unless stdout_contains "connected to #{hostname}"
+    raise ADBError, "Could not connect to device at #{hostname}:#{port}#{stdout_stderr_message}" unless stdout_contains "connected to #{hostname}"
   end
 
   #
@@ -91,9 +93,9 @@ module ADB
   # @param timeout value for the command to complete.  Defaults to 30
   # seconds.
   #
-  def install(installable, target={}, timeout=30)
-    execute_adb_with(timeout, "#{which_one(target)} wait-for-device install #{installable}")
-    raise ADBError, "Could not install #{installable}" unless stdout_contains "Success"
+  def install(installable, options=nil, target={}, timeout=30)
+    execute_adb_with_exactly(timeout, *"#{which_one(target)} wait-for-device install #{options}".split, installable)
+    raise ADBError, "Could not install #{installable}#{stdout_stderr_message}" unless stdout_contains "Success"
   end
 
   #
@@ -107,7 +109,7 @@ module ADB
   #
   def uninstall(package, target={}, timeout=30)
     execute_adb_with(timeout, "#{which_one(target)} uninstall #{package}")
-    raise ADBError, "Could not uninstall #{package}" unless stdout_contains "Success"
+    raise ADBError, "Could not uninstall #{package}#{stdout_stderr_message}" unless stdout_contains "Success"
   end
 
   #
@@ -157,11 +159,12 @@ module ADB
   # seconds.
   #
   def push(source, destination, target={}, timeout=30)
-    execute_adb_with(timeout, "#{which_one(target)} push #{source} #{destination}")
+    args = "#{which_one(target)} push".split
+    execute_adb_with_exactly(timeout, *args, source, destination)
   end
 
   #
-  # push a file
+  # pull a file
   #
   # @param the fully quanified source (device) file name
   # @param the fully quanified destination (local) file name
@@ -171,7 +174,8 @@ module ADB
   # seconds.
   #
   def pull(source, destination, target={}, timeout=30)
-    execute_adb_with(timeout, "#{which_one(target)} pull #{source} #{destination}")
+    args = "#{which_one(target)} pull".split
+    execute_adb_with_exactly(timeout, *args, source, destination)
   end
 
   #
@@ -200,9 +204,26 @@ module ADB
 
   private
 
+  def stdout_stderr_message
+    if not last_stdout.empty?
+      if not last_stderr.empty?
+        return " Cause: #{last_stdout}, and Error: #{last_stderr}"    
+      else
+        return " Cause: #{last_stdout}"
+      end
+    elsif not last_stderr.empty?
+        return " Error: #{last_stderr}"
+    end
+    ''
+  end
+
   def execute_adb_with(timeout, arguments)
     args = arguments.split
-    process = ChildProcess.build('adb', *args)
+    execute_adb_with_exactly timeout, *args
+  end
+
+  def execute_adb_with_exactly(timeout, *arguments)
+    process = ChildProcess.build('adb', *arguments)
     process.io.stdout, process.io.stderr = std_out_err
     process.start
     kill_if_longer_than(process, timeout)
@@ -235,10 +256,14 @@ module ADB
   end
 
   def std_out_err
-    return ::Tempfile.new("adb-out#{Time.now}"), ::Tempfile.new("adb-err#{Time.now}")
+    return ::Tempfile.new(filename_for('adb-out')), ::Tempfile.new(filename_for('adb-err'))
   end
 
   def stdout_contains(expected)
     last_stdout.include? expected
+  end
+
+  def filename_for(prefix)
+    "#{prefix}-#{Time.new.to_s.gsub(' ', '_').gsub(':', '_')}"
   end
 end

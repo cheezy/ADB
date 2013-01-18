@@ -1,7 +1,35 @@
-=== Release 0.3 / 2012-8-22
+=== Release 0.5.5 / 2012-9-18
 * Enhancements
+  * Added last Stdout and Stderr to ADBError messages
 
-* Bug Fixes
+=== Release 0.5.4 / 2012-9-19
+* Fixes
+  * Corrected push, pull when multiple arguments used
+  
+=== Release 0.5.3 / 2012-9-18
+* Enhancements
+  * Added travis-ci config file for automated specs
+* Fixes
+  * Corrected push, pull when path has space
+
+=== Release 0.5.2 / 2012-9-18
+* Fixes
+  * Corrected install when path has space
+
+=== Release 0.5.1 / 2012-9-11
+* Fixes
+  * Corrected filename for stdout and stderr so it will work properly on Windows
+
+=== Release 0.5 / 2012-9-9
+* Enhancements
+  * Added instrument method to send an instrumentation request
+
+=== Release 0.4 / 2012-9-8
+* Enhancements
+  * Added ability to pass options to the install command
+
+=== Release 0.3 / 2012-8-22
+* Fixes
   * DateTime adjustment bug on Linux
   * Add wait-for-device for install on Linux
 
