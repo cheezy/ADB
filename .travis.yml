@@ -10,6 +10,10 @@ before_install:
 
   # This is a bit of a hack to get the android-15 arm abi installed
   - wget http://dl.google.com/android/repository/sysimg_armv7a-15_r02.zip
+  - ls -l ~/builds
+  - ls -l ~/builds/joelbyler
+  - ls -l ~/builds/joelbyler/ADB
+  - ls -l ~/builds/joelbyler/ADB/android-sdk-linux
   - mkdir -p ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
   - unzip sysimg_armv7a-15_r02.zip -d ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
 
