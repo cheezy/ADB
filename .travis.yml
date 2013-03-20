@@ -5,32 +5,39 @@ before_install:
   - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_99.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :99 -ac -screen 0 1280x1024x16"
 
   # download the latest android sdk and unzip
-  - wget http://dl.google.com/android/android-sdk_r18-linux.tgz
-  - tar -zxf android-sdk_r18-linux.tgz
+  - wget http://dl.google.com/android/android-sdk_r21.0.1-linux.tgz
+  - tar -zxf android-sdk_r21.0.1-linux.tgz
+  - export ANDROID_HOME=~/builds/square/otto/android-sdk-linux
+  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  - TOOLS=$(android list sdk --no-ui | grep "Android SDK Platform-tools" | cut -d"-" -f1)
+  - android update sdk --filter "$TOOLS" --no-ui --force
+  - SDK=$(android list sdk --no-ui | grep ", API 16," | cut -d"-" -f1)
+  - android update sdk --filter "$SDK" --no-ui --force
+
+  #- wget http://dl.google.com/android/android-sdk_r18-linux.tgz
+  #- tar -zxf android-sdk_r18-linux.tgz
 
   # This is a bit of a hack to get the android-15 arm abi installed
-  - wget http://dl.google.com/android/repository/sysimg_armv7a-15_r02.zip
-  - ls -l ~/builds
-  - ls -l ~/builds/joelbyler
-  - ls -l ~/builds/joelbyler/ADB
-  - ls -l ~/builds/joelbyler/ADB/android-sdk-linux
-  - mkdir -p ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
-  - unzip sysimg_armv7a-15_r02.zip -d ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
+  #- wget http://dl.google.com/android/repository/sysimg_armv7a-15_r02.zip
+  #- mkdir -p ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
+  #- unzip sysimg_armv7a-15_r02.zip -d ~/builds/joelbyler/ADB/android-sdk-linux/system-images/android-15
 
   # setup your ANDROID_HOME and PATH environment variables
   # use ~/builds/[Github username]/[project]/android-sdk-linux
-  - export ANDROID_HOME=~/builds/joelbyler/ADB/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
+  #- export ANDROID_HOME=~/builds/joelbyler/ADB/android-sdk-linux
+  #- export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
 
   # only update the sdk for the tools and platform-tools (1,2) and whatever api level
   # you are building for android (run "android list sdk" to get the full list.  9 = 2.3.3 or API level 10
   #- android list sdk --all
-  - android update sdk -u -f --filter 1,2
-  - android update sdk -u -f --filter android-15
+  #- android update sdk -u -f --filter 1,2
+  #- android update sdk -u -f --filter android-15
 
+  
+  
   # Create an emulator for testing against
-  - echo no | android create avd -n Android_4.0.3 -t 1 --force
-  - echo "hw.ramSize=2048" >> ~/.android/avd/Android_4.0.3.i
+  #- echo no | android create avd -n Android_4.0.3 -t 1 --force
+  #- echo "hw.ramSize=2048" >> ~/.android/avd/Android_4.0.3.i
   # Need to figure out how to get the emulator to start up properly
   #- emulator -avd Android_4.0.3 -port 5554 -no-window -no-audio -no-boot-anim &
   #- adb wait-for-device
