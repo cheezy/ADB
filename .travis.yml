@@ -30,5 +30,5 @@ language: ruby
 rvm:
   - 1.9.3
 
-#after_script:
-  #- bundle exec rake test
+after_script:
+  - bundle exec rake test
