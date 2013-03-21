@@ -32,7 +32,7 @@ Feature: Using the ADB module
     Given the adb server is started
     And I am connected to the local device
     When I change the devices date and time to 08/10/2012 11:25
-    Then the device time should be Aug 10 11:25:00 EDT 2012
+    Then the device time should be Aug 10 11:25:00
 
   Scenario: Forwarding ports
     Given the adb server is started

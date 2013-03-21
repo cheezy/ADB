@@ -1,6 +1,6 @@
 APK_FILE_NAME = 'features/support/ApiDemos.apk'
 TEMP_FILE_NAME = 'cuke_test_file.txt'
-TEMP_FILE_REMOTE_LOCATION = '/sdcard/'
+TEMP_FILE_REMOTE_LOCATION = '/sdcard'
 
 When /^the adb server is started$/ do
   start_server
@@ -81,15 +81,20 @@ Then /^I should be able to push a file to the local device$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
+
+  shell("mount -o rw,remount #{TEMP_FILE_REMOTE_LOCATION}", {:serial => sn})
+
   shell("rm #{TEMP_FILE_NAME}", {:serial => sn})
   shell("ls #{TEMP_FILE_NAME}", {:serial => sn})
+
+
   last_stdout.should include 'No such file or directory'
 
   # create the temp file
   File.open(TEMP_FILE_NAME, 'w'){ |f|  f.write('Temporary file for adb testing. If found, please delete.') }
 
   # push the file
-  push(TEMP_FILE_NAME, "#{TEMP_FILE_REMOTE_LOCATION}#{TEMP_FILE_NAME}", {:serial => sn})
+  push(TEMP_FILE_NAME, "#{TEMP_FILE_REMOTE_LOCATION}/#{TEMP_FILE_NAME}", {:serial => sn})
   last_stderr.should_not include 'failed to copy'
 
 end
@@ -99,10 +104,10 @@ Then /^I should be able to pull a file from the local device$/ do
   sn = devices[0]
   wait_for_device({:serial => sn}, 60)
   remount({:serial => sn})
-  shell("touch #{TEMP_FILE_REMOTE_LOCATION}#{TEMP_FILE_NAME}", {:serial => sn})
+  shell("touch #{TEMP_FILE_REMOTE_LOCATION}/#{TEMP_FILE_NAME}", {:serial => sn})
 
   # pull the file
-  pull "#{TEMP_FILE_REMOTE_LOCATION}#{TEMP_FILE_NAME}", #{TEMP_FILE_NAME}", {:serial => sn})
+  pull "#{TEMP_FILE_REMOTE_LOCATION}/#{TEMP_FILE_NAME}", "#{TEMP_FILE_NAME}", {:serial => sn}
 
   # confirm that the file was created
   File.exists?(TEMP_FILE_NAME).should == true
