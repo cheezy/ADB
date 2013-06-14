@@ -112,3 +112,8 @@ Then /^I should be able to pull a file from the local device$/ do
   # confirm that the file was created
   File.exists?(TEMP_FILE_NAME).should == true
 end
+
+Then(/^I can list the installed packages$/) do
+  list_packages
+  last_stdout.should include 'com.leandog.brazenhead'
+end

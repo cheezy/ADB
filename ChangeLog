@@ -1,3 +1,7 @@
+=== Release 0.5.6 / 2013-7-14
+* Enhancements
+  * Added a helper method to list packages, list_packages(switches)
+
 === Release 0.5.5 / 2012-9-18
 * Enhancements
   * Added last Stdout and Stderr to ADBError messages
@@ -5,7 +9,7 @@
 === Release 0.5.4 / 2012-9-19
 * Fixes
   * Corrected push, pull when multiple arguments used
-  
+
 === Release 0.5.3 / 2012-9-18
 * Enhancements
   * Added travis-ci config file for automated specs

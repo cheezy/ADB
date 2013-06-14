@@ -11,7 +11,7 @@ describe ADB do
     should_call_adb_with('kill-server')
     ADB.stop_server
   end
-  
+
   it "should stop process if it takes too long" do
     ADB.should_receive(:last_stdout).and_return("device")
     process = double('process')
@@ -33,6 +33,15 @@ describe ADB do
     it "should be able to check the device date and time" do
       should_call_adb_with('wait-for-device', 'shell', 'date')
       ADB.shell('date')
+    end
+
+    it "can list installed packages" do
+      should_call_adb_with('wait-for-device', 'shell', 'pm', 'list', 'packages')
+      ADB.list_packages
+    end
+    it "can list installed packages with packages" do
+      should_call_adb_with('wait-for-device', 'shell', 'pm', 'list', 'packages', '-f')
+      ADB.list_packages '-f'
     end
   end
 
@@ -67,7 +76,7 @@ describe ADB do
       should_call_adb_with('pull', '/usr/local file with spaces.txt', '/sdcard/remote file with spaces.txt')
       ADB.pull('/usr/local file with spaces.txt', '/sdcard/remote file with spaces.txt')
     end
-  
+
     it "should be able to remount the /system drive" do
       should_call_adb_with('remount')
       ADB.remount
@@ -234,9 +243,9 @@ describe ADB do
     end
 
   end
-  
-  
+
+
   def should_call_adb_with(*args)
-    ChildProcess.should_receive(:build).with('adb', *args).and_return(process_mock)    
+    ChildProcess.should_receive(:build).with('adb', *args).and_return(process_mock)
   end
-end
+ end

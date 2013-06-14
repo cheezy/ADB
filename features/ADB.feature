@@ -17,7 +17,7 @@ Feature: Using the ADB module
     Given the adb server is started
     And I am connected to the local device
     Then I should be able to install the sample application
-    
+
   Scenario: Providing command line options for installation
     Given the adb server is started
     And I am connected to the local device
@@ -58,4 +58,6 @@ Feature: Using the ADB module
     Given the adb server is started
     Then I should be able to pull a file from the local device
 
-
+  Scenario: List installed packages
+    Given the adb server is started
+    Then I can list the installed packages

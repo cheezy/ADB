@@ -11,7 +11,7 @@ require 'date'
 module ADB
   include ADB::Instrumentation
 
-  attr_reader :last_stdout, :last_stderr  
+  attr_reader :last_stdout, :last_stderr
 
   #
   # start the server process
@@ -126,11 +126,24 @@ module ADB
   end
 
   #
+  # execute shell list packages command
+  #
+  # @param [String] optional switches, see adb shell list documentation
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def list_packages(switches='', target={}, timeout=30)
+    shell("pm list packages #{switches}", target, timeout)
+  end
+
+  #
   # format a date for adb shell date command
   #
   # @param date to format.  Defaults current date
   #
-  def format_date_for_adb(date=Date.new) 
+  def format_date_for_adb(date=Date.new)
     date.strftime("%C%y%m%d.%H%M00")
   end
 
@@ -207,7 +220,7 @@ module ADB
   def stdout_stderr_message
     if not last_stdout.empty?
       if not last_stderr.empty?
-        return " Cause: #{last_stdout}, and Error: #{last_stderr}"    
+        return " Cause: #{last_stdout}, and Error: #{last_stderr}"
       else
         return " Cause: #{last_stdout}"
       end
