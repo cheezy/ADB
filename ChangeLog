@@ -1,3 +1,9 @@
+=== Release 0.5.7 / 2019-7-16
+* Enhancements
+  * Added helper method to list devices details, android version and application version
+* Fixes
+  * Corrected an exception when the device method was invoked without initializing the ADB server
+
 === Release 0.5.6 / 2013-7-14
 * Enhancements
   * Added a helper method to list packages, list_packages(switches)

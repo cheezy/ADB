@@ -67,9 +67,69 @@ module ADB
   #
   def devices(timeout=30)
     execute_adb_with(timeout, 'devices')
-    device_list = last_stdout.split("\n")
+    device_list = last_stdout.split("\n").select {|i| !i.include?('*')}
     device_list.shift
     device_list.collect { |device| device.split("\t").first }
+  end
+
+  #
+  # list all connected devices and details, return hash with uidid, model and android version
+  #
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def list_devices_details(timeout=30)
+    execute_adb_with(timeout, 'devices -l')
+    device_list = last_stdout.split("\n").select {|i| !i.include?('*')}
+    device_list.shift
+    devices = []
+    device_list.each do |device|
+      udid = device.split.first
+      model = device.split.select {|i| i.include? 'model'}.first.split(':').last
+      version = android_version(serial: udid)
+      devices << { udid: udid, model: model, android_version: version }
+    end
+    devices
+  end
+
+  #
+  # return android version of a device target
+  #
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def android_version(target={}, timeout=30)
+    shell('getprop ro.build.version.release', target, timeout)
+    last_stdout.gsub(/[^0-9.]/, '').to_f
+  end
+
+  #
+  # return application version
+  #
+  # @param the package name of the application
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def application_version(package, target={}, timeout=30)
+    shell("dumpsys package #{package_app}", target, timeout)
+    last_stdout.gsub(/[^0-9.]/, '').to_f
+  end
+
+  #
+  # return date and time of a device target
+  #
+  # @param [Hash] which device to wait for.  Valid keys are :device,
+  # :emulator, and :serial.
+  # @param timeout value for the command to complete.  Defaults to 30
+  # seconds.
+  #
+  def device_time(target={}, timeout=30)
+    shell("date +%s", target, timeout)
+    Time.at(last_stdout.lstrip.to_i)
   end
 
   #
